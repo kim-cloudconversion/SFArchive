@@ -1,0 +1,35 @@
+<apex:page controller="CloudConversion.ManageListingsController" action="{!getItems}">
+
+   <apex:pageMessages />
+
+   <apex:form id="theForm">
+     <apex:pageBlock id="pageBlock">
+			 <apex:pageBlockButtons location="bottom"> 
+			    <apex:commandButton action="{!getItems}" value="Get Listings"/>
+			    <apex:commandButton action="{!getTransactions}" value="Get Transactions"/>
+			 </apex:pageBlockButtons>
+
+			 <apex:pageBlockSection id="pgsResponse2" columns="1">
+				 <apex:pageBlockSectionItem >
+				     <apex:outputLabel value="Item Ids" for="itemIds"/>
+				     <apex:inputTextarea id="itemIds" value="{!itemIds}" cols="50" rows="15"/>
+				 </apex:pageBlockSectionItem>
+				 <apex:pageBlockSectionItem >
+				     <apex:outputLabel value="SKU" for="sku"/>
+				     <apex:inputText id="sku" value="{!sku}"/>
+				 </apex:pageBlockSectionItem>
+				 <apex:pageBlockSectionItem >
+				     <apex:outputLabel value="Transaction Id" for="txnId"/>
+				     <apex:inputText id="txnId" value="{!transactionId}"/>
+				 </apex:pageBlockSectionItem>
+				 <apex:pageBlockSectionItem >
+				     <apex:outputLabel value="Get New Listings Only" for="newListings"/>
+				     <apex:inputCheckbox id="newListings" value="{!newListingsOnly}"/>
+				 </apex:pageBlockSectionItem>
+			 </apex:pageBlockSection>
+
+        </apex:pageBlock>
+   </apex:form>
+   
+   
+</apex:page>

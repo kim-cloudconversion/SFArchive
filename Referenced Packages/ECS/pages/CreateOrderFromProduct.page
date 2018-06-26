@@ -1,0 +1,45 @@
+<apex:page sidebar="false" standardController="ECS__Product__c" id="page" extensions="ECS.CreateOrderController" action="{!init}">
+
+<!-- showHeader="false" applyHtmlTag="false" applyBodyTag="false"> 
+
+	<html>
+	
+	<head>
+		<apex:outputPanel id="pcaPanel" rendered="{!displayPCA}">
+			<script>(function (a, c, b, e) {
+					 a[b] = a[b] || {}; a[b].initial = { accountCode: "{!pcaKey}", host: "{!pcaKey}.pcapredict.com" };
+					 a[b].on = a[b].on || function () { (a[b].onq = a[b].onq || []).push(arguments) }; var d = c.createElement("script");
+					 d.async = !0; d.src = e; c = c.getElementsByTagName("script")[0]; c.parentNode.insertBefore(d, c)
+					 })(window, document, "pca", "//{!pcaKey}.pcapredict.com/js/sensor.js");</script>
+ 
+		</apex:outputPanel>
+	</head>
+	
+	<body>	 -->
+	
+		<c:CreateOrder id="c"
+					   topController="{!theController}" 
+		               displayLineDollarPromo="true" 
+					   displayDollarPromo="true" 
+		               displayLinePercentPromo="true" 
+		               displayPercentPromo="true"
+					   productReadOnly="false" 
+					   priceReadOnly="false" 
+					   quantityReadOnly="false"
+					   displayCustomerSearch="true" 
+					   displayTaxExempt="true" 
+					   displayLineShipping="true"
+					   displayOrderType="true" 
+					   displayPromoCode="true" 
+					   displayShippingOptions="true"
+					   displayAddresses="true"
+					   displayNotes="true"
+					   displayPricebooks="true"
+					   displayRecurringOrder="true"
+					   displayAddOrderLine="true"
+					   displayOrderSettings="true"
+					   completeOrderRedirectURL=""/>
+<!-- </body>
+	</html> -->
+	
+</apex:page>

@@ -1,0 +1,16 @@
+<apex:page controller="CloudConversion.ManageListingsController">
+
+   <!-- <apex:pageMessages />
+	
+   <apex:form id="theForm"> 
+     <apex:pageBlock id="pageBlock">
+
+	     <apex:pageBlockButtons >
+	        <apex:commandButton action="{!getListings}"  value="Get Listings"/>
+	     </apex:pageBlockButtons>
+
+ 		 <apex:inputFile id="attachment" value="{!attachmentBody}" filename="{!attachmentName}" /> 
+
+	 </apex:pageBlock>
+   </apex:form> -->
+</apex:page>

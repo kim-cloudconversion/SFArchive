@@ -1,0 +1,7 @@
+<apex:page standardcontroller="ECS__Quote__c" extensions="ECS.ConvertQuoteController" action="{!convert}">
+
+	<c:Analytics event="INFO" app="ECS" />
+	
+	<apex:pageMessages id="pageMessages" />
+	
+</apex:page>

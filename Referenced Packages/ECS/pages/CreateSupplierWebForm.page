@@ -1,0 +1,3 @@
+<apex:page controller="ECS.ManageSuppliersController" action="{!saveForm}" showHeader="false">
+	<apex:pageMessages />
+</apex:page>

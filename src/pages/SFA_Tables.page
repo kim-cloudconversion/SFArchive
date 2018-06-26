@@ -1,0 +1,149 @@
+<apex:page Controller="SFA_Tables">
+<script language="javascript">
+    var SelIDs = "j_id0:theForm:thePB:SelIDs";
+    var SelCmd = "j_id0:theForm:thePB:SelCmd";
+   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    function set_id(ID) {
+        document.getElementById('j_id0:theForm:thePB:Edit_ID').value = ID;
+    }
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    function criteria_help() {
+        var obj = document.getElementById('criteria_help');
+        if (obj.innerHTML != '') obj.innerHTML = '';
+        else {
+            var help = "<br/><b>Selection Criteria Help:</b><br/>\n";
+            help += "This Selection Criteria is formatted like the 'WHERE' clause<br/>\n";
+            help += "an SOQL Query (if you're familiar with SOQL or SQL queries).<br/>\n";
+            help += "Think of it as 'SELECT Records WHERE <i>SomeField</i> = <i>SomeValue</i>.<br/>\n";
+            help += "String values should be enclosed in single quotes (') while<br/>\n";
+            help += "numerical or Date/DateTime values should not, for example:<br/>\n";
+            help += "last_name = 'Smith' or balance_due = 0. Dates should not be<br/>\n";
+            help += "quoted and should be in 'yyyy-mm-dd' format. DateTime values<br/>\n";
+            help += "should be in 'yyyy-mm-ddThh:mm:ss.000Z' format (for literal<br/>\n";
+            help += "values). Dynamic dates should be expressed within brackets<br/>\n";
+            help += "'{' and '}' for example '{90 days}', '{6 months}', or '{2 years}'.<br>\n";
+            help += "A good example would be 'LastModifiedDate < {6 months}'.<br/>\n";
+            help += "You can also use parentheses to group your selection criteria<br/>\n";
+            help += "as well as 'AND' and 'OR' to control selection. An example is<br/>\n";
+            help += "\"status = 'Closed' AND (date1 < {90 days} OR date2 < {6 weeks})\"<br/>\n";
+            obj.innerHTML = help;
+        }
+    }
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    function loading_deps() {
+        document.getElementById('j_id0:theForm:thePB:Edit_Deps').innerHTML = 'Loading Dependencies, Please Wait  ...';
+    }
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    function Options(Obj, id) {
+        var bodyRect = document.body.getBoundingClientRect(),elemRect = Obj.getBoundingClientRect();
+        var top   = elemRect.top - bodyRect.top;
+        var left   = elemRect.left - bodyRect.left;
+        var panel = document.getElementById('options_menu_table');
+        panel.style.top = (top - 150) + "px";
+        panel.style.left = left + "px";
+        panel.style.visibility = 'visible';
+        document.getElementById(SelIDs).value = id;
+    }
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    function hide_options() {
+        document.getElementById('options_menu_table').style.visibility = 'hidden';
+    }
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    function do_cmd(command) {
+        document.getElementById(SelCmd).value = command;
+        doCommand(); // run salesforce apex command here
+    }
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+</script>
+<apex:pageMessages escape="false" />
+  <apex:form id="theForm">
+  <apex:actionFunction name="doCommand" action="{!DoCommand}"/>
+   <apex:sectionHeader title="Manage Archived Tables"/>
+    <apex:pageblock id="thePB">
+      <apex:pageblockButtons >
+        <apex:commandButton value="Add a New Table" action="{!AddTable}"/>
+        <input type="button" value="Help" onClick="show_help_table()" class="btn" />
+      </apex:pageblockButtons>
+
+      <apex:inputHidden id="Edit_ID" value="{!Edit_ID}"/>
+      
+      <apex:pageBlockTable value="{!ArchiveTables}" var="recd"  style="visibility: {!TablesVisible}" id="tables_table"> 
+        <apex:column headerValue="#"><apex:outputlabel value="{!recd.Temp__c}" /><input type="hidden" name="ID_{!recd.Id}" value="{!recd.Id}"/></apex:column>
+        <apex:column headerValue="Freindly Name"><apex:outputlabel value="{!recd.Name}" style="width: 150px" /></apex:column>
+        <apex:column headerValue="Salesforce Table"><apex:outputlabel value="{!recd.Table_Name__c}" style="width: 150px" /></apex:column>
+        <apex:column headerValue="Recds"><apex:outputlabel value="{!recd.Records_Archived__c}" style="width: 50px" /></apex:column>
+        <apex:column headerValue="Last Archived"><apex:outputlabel value="{!recd.Last_Archived__c}" style="width: 150px" /></apex:column>
+        <apex:column headerValue="Status"><apex:outputlabel value="{!recd.Status__c}" style="width: 100px" /></apex:column>
+        <apex:column headerValue="Auto"><apex:outputlabel value="{!recd.Auto_Archive__c}" style="width: 50px" /></apex:column>
+        <apex:column headerValue="Options">
+            <!--
+              <apex:commandButton value="Archive" action="{!ArchiveTable}" onClick="set_id('{!recd.Id}')" />
+              <apex:commandButton value="Edit" action="{!EditTable}" onClick="set_id('{!recd.Id}')" />
+              <apex:commandButton value="Count" action="{!CountRecords}" onClick="set_id('{!recd.Id}')" />
+              <apex:commandButton value="Delete" action="{!DeleteTable}" onClick="set_id('{!recd.Id}')" />
+              -->
+              <a href="#" onClick="Options(this, '{!recd.Id}');return false">Options</a>
+            </apex:column>
+    </apex:pageBlockTable>
+    <table cellpadding="10" cellspacing="0" border="1" id="edit_table" name="edit_table"  style="position: absolute; top: 75px; left: 300px; visibility: {!EditVisible}"  bgcolor="#CFEEF8">
+        <tr>
+            <td>
+                <table cellpadding="3" cellspacing="0" border="0">
+                    <tr><td colspan="2" align="center"><h1>{!EditTitle}</h1></td></tr>
+                    <tr><td align="right"><apex:outputlabel value="Friendly Name:" /></td><td><apex:inputText value="{!Edit_Name}" style="width: 150px"/></td></tr>
+                    <tr><td align="right"><apex:outputlabel value="Salesforce Table:" /></td><td><apex:selectList value="{!Edit_TableName}" multiselect="false" disabled="{!Edit_Disabled}" size="1" onmouseup="loading_deps()" >
+                        <apex:actionSupport event="onchange" action="{!GetDependents}" reRender="thePB"/>
+                        <apex:selectOptions value="{!Tables}"/>
+                        </apex:selectList><apex:commandButton value="<>" action="{!Toggle_TablesSort}"/> </td></tr>
+                    <tr><td align="right"><apex:outputlabel value="Dependencies:" /></td><td><apex:inputTextArea id="Edit_Deps" cols="75" rows="5" value="{!Edit_Dependent}" disabled="{!Edit_Disabled}" /></td></tr>
+                    <tr><td align="right"><apex:outputlabel value="Selection Criteria:" /></td><td><apex:inputTextArea id="Edit_Crit" cols="75" rows="5" value="{!Edit_Criteria}" /></td></tr>
+                    <tr><td></td><td>Add Field: <apex:selectList value="{!FieldToAdd}" multiselect="false" size="1" >
+                        <apex:actionSupport event="onchange" action="{!AddFieldToCriteria}" reRender="thePB"/>
+                        <apex:selectOptions value="{!TableFields}"/>
+                        </apex:selectList> 
+                        <apex:commandButton value="Test" action="{!TestCriteria}"/> 
+                        <input type="button" class="btn" value="Help" onClick="criteria_help()"/><span id="criteria_help"></span></td></tr>
+                    <tr><td align="right"><apex:outputlabel value="Auto-Archive:" /></td><td><apex:inputCheckbox value="{!Edit_Auto}" />
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <apex:outputlabel value="Add Dependent Tables:" />&nbsp;&nbsp;<apex:inputCheckbox value="{!Add_Dependents}" disabled="{!Edit_Disabled}" />
+                        </td></tr>
+                    <tr><td colspan="2" align="center"><apex:commandButton value="Save Table" action="{!SaveTable}"/><apex:commandButton value="Cancel" action="{!Cancel}"/></td></tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+    <table cellpadding="10" cellspacing="0" border="1" id="delete_table" name="delete_table"  style="position: absolute; top: 75px; left: 300px; width: 700px; visibility: {!DeleteVisible}"  bgcolor="#FFCCCC">
+        <tr>
+            <td>
+                <table cellpadding="3" cellspacing="0" border="0">
+                    <tr><td colspan="2" align="center"><h1>Delete Archived Table</h1></td></tr>
+                    <tr><td align="right"><apex:outputlabel value="Friendly Name:" /></td><td><apex:outputlabel value="{!Edit_Name}" escape="false" /></td></tr>
+                    <tr><td align="right"><apex:outputlabel value="Salesforce Table:" /></td><td><apex:outputlabel value="{!Edit_TableName}" escape="false" /></td></tr>
+                    <tr><td align="right"><apex:outputlabel value="Dependencies:" /></td><td><span style="overflow: auto; height: 100px; width: 500px">{!Edit_Dependent}</span></td></tr>
+                    <tr><td align="right"><apex:outputlabel value="Selection Criteria:" /></td><td><span style="overflow: auto; height: 100px; width: 500px">{!Edit_Criteria}</span></td></tr>
+                    <tr><td align="right"><apex:outputlabel value="Auto-Archive:" /></td><td>{!Edit_Auto}</td></tr>
+                    <tr><td colspan="2" align="center"><apex:outputlabel value="{!Delete_Message}" escape="false" /><br/>
+                          <apex:commandButton value="Delete Table" action="{!DeleteTable2}" style="visibility: {!DeleteButtonVisible}" />
+                          <apex:commandButton value="Cancel" action="{!Cancel}"/>
+                        </td></tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+    <table id="options_menu_table" cellpadding="10" cellspacing="0" border="1" bgcolor="#CEEEF7" style="visibility: hidden; position: absolute; top: 1px; left: 1px" onMouseOut="hide_options()" onMouseOver="this.style.visibility = 'visible'">
+        <tr>
+            <td onMouseOut="hide_options()">
+                <b>Options Menu</b><br/>
+                <a href="#" onClick="do_cmd('Archive')">Archive Table</a><br/>
+                <a href="#" onClick="do_cmd('Edit')">Edit Table</a><br/>
+                <a href="#" onClick="do_cmd('Count')">Count Records</a><br/>
+                <a href="#" onClick="do_cmd('Delete')">Delete Table</a><br/>
+
+            </td>
+        </tr>
+    </table>
+  <apex:inputHidden id="SelIDs" value="{!SelIDs}"/><apex:inputHidden id="SelCmd" value="{!SelCmd}"/>
+ </apex:pageblock> 
+   </apex:form> 
+</apex:page>

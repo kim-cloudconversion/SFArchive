@@ -1,0 +1,24 @@
+/*
+This file is generated and isn't the actual source code for this
+managed global class.
+This read-only file shows the class's global constructors,
+methods, variables, and properties.
+To enable code to compile, all methods return null.
+*/
+global class AttachmentUploadController {
+    global AttachmentUploadController() {
+
+    }
+    @RemoteAction
+    global static String attachBlob(String parentId, String attachmentId, String fileName, String contentType, String base64BlobValue) {
+        return null;
+    }
+    @RemoteAction
+    global static String deleteAttachment(String attachmentId) {
+        return null;
+    }
+    @RemoteAction
+    global static String getAttachments(String parentId) {
+        return null;
+    }
+}

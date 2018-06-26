@@ -1,0 +1,15 @@
+<apex:page standardController="ECS__Supplier__c" extensions="ECS.ManageDropboxFromSupplierController">
+	
+	<apex:pageMessages id="pageMessages"/>
+	
+	<apex:form >
+		
+		<H1>Getting Dropbox Images for {!supplier.Name} ({!supplier.ECS__Supplier_Id__c})</H1>
+		
+		<p>Folder Date: <apex:inputField value="{!supplier.ECS__PaymentDate__c}"/></p>
+		
+		<apex:commandButton action="{!getImages}" value="Get Images" rerender="pageMessages"/>
+	
+	</apex:form>
+	
+</apex:page>

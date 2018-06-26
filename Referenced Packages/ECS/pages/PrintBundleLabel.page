@@ -1,0 +1,5 @@
+<apex:page standardController="ECS__Bundle__c" extensions="ECS.ProductBundleController" action="{!print}">
+
+	<apex:pageMessages />
+
+</apex:page>

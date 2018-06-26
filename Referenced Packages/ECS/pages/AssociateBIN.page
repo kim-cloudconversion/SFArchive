@@ -1,0 +1,122 @@
+<apex:page controller="ECS.AssociateBinController" sidebar="false" showHeader="false" id="pge" docType="HTML-5.0" standardStylesheets="false" applyHtmlTag="false" applyBodyTag="false">
+	
+	<c:CC_Global_CSS />
+	
+	<c:Analytics event="INFO" app="ECS" />
+	
+	<apex:includeScript value="//code.jquery.com/jquery-3.1.0.slim.min.js" />
+
+	<script>
+		// Will hold our converted Apex data structures
+		var remoteResult;
+
+		function associateRemoteProduct() {
+
+			// get the text to search: SKU/UPC/Item Id/Bundle Id
+	        var productName = document.getElementById('product').value;
+	        var location = document.getElementById('location').value;
+	        
+	        Visualforce.remoting.Manager.invokeAction(
+	            '{!$RemoteAction.AssociateBinController.associateProduct}',
+	            productName,
+	            location,
+	            function(result, event){	// handles the response 
+
+	            	remoteResult = result;
+
+	                if (remoteResult) {
+	                	document.getElementById("responseMessages").innerHTML = remoteResult.message;
+	                	document.getElementById('product').focus();
+
+	                	if (remoteResult.error == false) {
+	                		document.getElementById('product').value = '';	
+	                	}	                	
+	                    
+	                } else if (event.type === 'exception') {
+	                    document.getElementById("responseMessages").innerHTML = event.message;
+	         
+	                } else {
+	                    document.getElementById('responseMessages').innerHTML = "There was a problem, please try again.";
+	                } 
+
+	            }, 
+	            {escape: true}
+	        );
+	    }
+
+		/* Handle the enter at the end of the scanned location */
+	    function handleLocationKeyPress(e){
+
+	    	// if enter is captured then move focus to product 
+			if (e.keyCode == 13) {
+		        document.getElementById('product').focus();		        
+		    }		    
+          
+        }
+
+		/* Handle the enter at the end of the scanned product/bundle */
+	    function handleProductKeyPress(e){
+
+	    	// if enter is captured then keep focus to product 
+			if (e.keyCode == 13) {
+		        document.getElementById('product').focus();
+
+		    	// call remote logic to search/add product to that location
+		        associateRemoteProduct();
+		        return false;
+		    }
+          
+        }
+	        
+		window.onload = function() {
+			// when the page loads always focus on the location [if location is empty]
+			var location = document.getElementById('location').value;
+
+			if (!location) {
+				document.getElementById('location').focus();
+			}
+		}
+	
+    </script>
+   
+    <style>
+    
+	    .slds {
+	    	max-width: 780px;
+    		margin: 26px auto 0;
+	    }
+    	.slds-form--stacked {
+    		margin: 10px 20px;
+    	}
+    	.slds-popover {
+    		margin: 0 20px 0 20px !important;
+    	}
+    	
+    </style>
+	
+	<div class="slds">
+
+		<div class="slds-form--stacked">
+			<div class="slds-form-element">
+		    	<label class="slds-form-element__label" for="textareaSample2">Location</label>
+		   	 	<div class="slds-form-element__control">
+					<input id="location" type="text" class="slds-input" name="location" onkeypress="handleLocationKeyPress(event);" />
+				</div>
+			</div>
+			<div class="slds-form-element">
+		    	<label class="slds-form-element__label" for="inputSample2">Search by SKU/UPC/Item Id/Bundle Id</label>
+		    	<div class="slds-form-element__control">
+		    		<input id="product" type="text" class="slds-input" name="product" onkeypress="handleProductKeyPress(event);"/>
+		    	</div>
+		  	</div>	
+
+		  	<div id="responseMessages"></div>	  					 		 
+		</div>	
+
+		<div class="slds-form--stacked" style="float:right">
+			<button onclick="associateRemoteProduct();" class="slds-button slds-button--brand">Associate</button>
+		</div>
+
+	</div>
+
+</apex:page>

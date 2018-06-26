@@ -1,0 +1,5 @@
+<apex:page standardController="ECS__Log__c" extensions="CloudConversion.ManagePlatformNotificationLogsController" action="{!process}">
+
+	<apex:pageMessages />
+
+</apex:page>

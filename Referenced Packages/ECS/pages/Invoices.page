@@ -1,0 +1,404 @@
+<apex:page controller="ECS.InvoicesController" showHeader="false"  applyBodyTag="false" standardStylesheets="false" renderAs="pdf" action="{!updateOrders}"> <!-- renderAs="pdf" -->
+
+	<body>
+	
+	    <apex:repeat value="{!ordersObj}" var="custOrder"> 
+	
+		    <table border="0" cellpadding="0" cellspacing="0" width="100%"> 
+		        <tbody>
+		            <tr>
+		                <td valign="top">
+		                    <apex:image value="{!custOrder.oset.ECS__Logo_Resource_Name__c}" rendered="{!custOrder.oset.ECS__Logo_Resource_Name__c!=null}" />
+		                    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+		                        <tbody>
+		                            <tr>
+		                                <td align="left">
+		                                    <apex:outputPanel rendered="{!!custOrder.oset.ECS__Hide_Address_on_Invoice__c}">
+		                                        <span style="font-size:11px;"><span style="font-family:verdana,geneva,sans-serif;">
+										     {!sellerAddress.Name}<br/>
+										     {!sellerAddress.ECS__Address_Line_1__c}<br/>
+										     {!sellerAddress.ECS__City__c}, {!sellerAddress.ECS__State_Province_Region__c}&nbsp;&nbsp;{!sellerAddress.ECS__Zip_Postal_Code__c}<br/>
+										     {!sellerAddress.ECS__Country__c}
+										</span></span>
+		                                    </apex:outputPanel>
+		                                </td>
+		                                <apex:outputPanel rendered="{!custOrder.oset.ECS__Barcode_Location__c='Top - Right'}">
+		                                    <td>
+		                                        <center>
+		                                            <apex:outputPanel rendered="{!custOrder.barcodeValue=null}">
+		                                                <c:BarcodeContainer barcodeText="{!custOrder.o.ECS__External_Order_ID__c}" displayText="{!custOrder.o.ECS__External_Order_ID__c}" width="4" height="50" />
+		                                            </apex:outputPanel>
+		                                            <apex:outputPanel rendered="{!custOrder.barcodeValue!=null}">
+		                                                <c:BarcodeContainer barcodeText="{!custOrder.barcodeValue}" displayText="{!custOrder.barcodeValue}" width="4" height="50" />
+		                                            </apex:outputPanel>
+		                                        </center>
+		                                    </td>
+		                                </apex:outputPanel>
+		                                <td align="right">
+		                                    <table cellpadding="0" cellspacing="0" width="100%">
+		                                        <tbody>
+		                                            <tr>
+		                                                <td style="text-align: right; height: 35px;">
+		                                                	<span style="font-family:verdana,geneva,sans-serif;"><span style="font-size: 24px;"><strong>{!typeVal}</strong></span></span>
+		                                                </td>
+		                                            </tr>
+		                                            <tr>
+		                                                <td align="right">
+		                                                    <table border="1" cellpadding="2" cellspacing="0" height="60" style="float: right; font-family: arial, helvetica, sans-serif; text-align: center;" width="100%">
+		                                                        <tbody>
+		                                                            <tr>
+		                                                                <td><span style="font-size:11px;"><span style="font-family:verdana,geneva,sans-serif;"><strong>Payment Date</strong></span></span>
+		                                                                </td>
+		                                                                <td><span style="font-size:11px;"><span style="font-family:verdana,geneva,sans-serif;"><strong>{!typeVal} #</strong></span></span>
+		                                                                </td>
+		                                                            </tr>
+		                                                            <tr>
+		                                                                <!-- <td><span style="font-size:11px;"><span style="font-family:verdana,geneva,sans-serif;"><apex:outputText value="{0, date, MMM dd, yyyy}">
+																																	                 <apex:param value="{!custOrder.Order_Time__c}"/>
+																																	               </apex:outputText></span></span></td>-->
+		                                                                <td><span style="font-size:11px;"><span style="font-family:verdana,geneva,sans-serif;"><c:FormatDateTime date_Timevalue="{!custOrder.o.ECS__Payment_Time__c}"/></span></span>
+		                                                                </td>
+		                                                                <td><span style="font-size:11px;"><span style="font-family:verdana,geneva,sans-serif;">{!custOrder.o.name}</span></span>
+		                                                                </td>
+		                                                            </tr>
+		                                                        </tbody>
+		                                                    </table>
+		                                                </td>
+		                                            </tr>
+		                                        </tbody>
+		                                    </table>
+		                                </td>
+		                            </tr>
+		                        </tbody>
+		                    </table>
+		                </td>
+		            </tr>
+		            <tr>
+		                <td style="height: 3px;">&nbsp;</td>
+		            </tr>
+		            <tr>
+		                <td style="height: 10px;">
+		                    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+		                        <tbody>
+		                            <tr>
+		                                <td align="left" valign="top">
+		                                    <apex:outputpanel rendered="{!typeVal!='Packing Slip' && !custOrder.oset.ECS__HideBillingAddressOnInvoice__c}">
+		                                        <table border="1" cellpadding="3" cellspacing="0" width="100%">
+		                                            <tbody>
+		                                                <tr>
+		                                                    <td height="25"><span style="font-size:11px;"><span style="font-family:verdana,geneva,sans-serif;"><strong>Bill To:</strong></span></span>
+		                                                    </td>
+		                                                </tr>
+		                                                <tr>
+		                                                    <td style="font-family:Arial, Helvetica, sans-serif;padding-left:10; "><span style="font-size:11px;"><span style="font-family:verdana,geneva,sans-serif;"><apex:outputText escape="false" value="{!custOrder.o.ECS__Billing_Address_Info__c}"/></span></span>
+		                                                    </td>
+		                                                </tr>
+		                                            </tbody>
+		                                        </table>
+		                                    </apex:outputpanel>
+		                                </td>
+		                                <td width="25px;">&nbsp;</td>
+		                                <td valign="top">
+		                                    <table border="1" cellpadding="3" cellspacing="0" width="100%">
+		                                        <tbody>
+		                                            <tr>
+		                                                <td height="25"><span style="font-size:11px;"><span style="font-family:verdana,geneva,sans-serif;"><strong>Ship To:</strong></span></span>
+		                                                </td>
+		                                            </tr>
+		                                            <tr>
+		                                                <td style="font-family:Arial, Helvetica, sans-serif;padding-left:10; "><span style="font-size:11px;"><span style="font-family:verdana,geneva,sans-serif;"><apex:outputText escape="false" value="{!custOrder.o.ECS__Shipping_Address__c}"/></span></span>
+		                                                </td>
+		                                            </tr>
+		                                        </tbody>
+		                                    </table>
+		                                </td>
+		                            </tr>
+		                        </tbody>
+		                    </table>
+		                </td>
+		            </tr>
+		            <tr>
+		                <td>
+		                    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+		                        <tbody>
+		                            <tr>
+		                                <td>
+		                                    <table border="1" cellpadding="3" cellspacing="0" style="font-family:arial,helvetica,sans-serif;font-size:12px; margin-top:5px;" width="100%">
+		                                        <thead>
+		                                            <tr>
+		                                                <apex:repeat value="{!$ObjectType.ECS__eCommSource_Order__c.FieldSets.ECS__Invoice}" var="fs" rendered="{!typeVal!='Packing Slip'}">
+		                                                    <th class="table517header" style="text-align: center;"><span style="font-family:verdana,geneva,sans-serif;"><span style="font-size:11px;">{!fs.Label}</span></span>
+		                                                    </th>
+		                                                </apex:repeat>
+		                                                <apex:repeat value="{!$ObjectType.ECS__eCommSource_Order__c.FieldSets.ECS__Packing_Slip}" var="fs" rendered="{!typeVal='Packing Slip'}">
+		                                                    <th class="table517header" style="text-align: center;"><span style="font-family:verdana,geneva,sans-serif;"><span style="font-size:11px;">{!fs.Label}</span></span>
+		                                                    </th>
+		                                                </apex:repeat>
+		                                            </tr>
+		                                        </thead>
+		                                        <tbody>
+		                                            <tr>
+		                                                <apex:repeat value="{!$ObjectType.ECS__eCommSource_Order__c.FieldSets.ECS__Invoice}" var="fs" rendered="{!typeVal!='Packing Slip'}">
+		                                                    <td style="text-align: center;"><span style="font-size:11px;"><span style="font-family:verdana,geneva,sans-serif;"><apex:outputField value="{!custOrder.o[fs]}" /></span></span>
+		                                                    </td>
+		                                                </apex:repeat>
+		                                                <apex:repeat value="{!$ObjectType.ECS__eCommSource_Order__c.FieldSets.ECS__Packing_Slip}" var="fs" rendered="{!typeVal='Packing Slip'}">
+		                                                    <td style="text-align: center;"><span style="font-size:11px;"><span style="font-family:verdana,geneva,sans-serif;"><apex:outputField value="{!custOrder.o[fs]}" /></span></span>
+		                                                    </td>
+		                                                </apex:repeat>
+		                                            </tr>
+		                                        </tbody>
+		                                    </table>
+		                                </td>
+		                            </tr>
+		                        </tbody>
+		                    </table>
+		                </td>
+		            </tr>
+		            <tr>
+		                <td height="4">&nbsp;</td>
+		            </tr>
+		            <tr>
+		                <td>
+		                    <table border="0" cellpadding="0" cellspacing="0" width="100%"> 
+		                        <tbody>
+		                            <tr>
+		                                <td style="text-align: center; width: 50px;">
+		                                    <table align="center" border="1" cellpadding="4" cellspacing="0" class="table517" width="100%">
+		                                        <thead>
+		                                            <tr>
+		                                                <apex:repeat value="{!$ObjectType.ECS__eCommSource_Order_Line__c.FieldSets.ECS__Invoice}" var="fs" rendered="{!typeVal!='Packing Slip'}">
+		                                                    <th class="table517header"><span style="font-family:verdana,geneva,sans-serif;"><span style="font-size:11px;">{!fs.Label}</span></span>
+		                                                    </th>
+		                                                </apex:repeat>
+		                                                <apex:repeat value="{!$ObjectType.ECS__eCommSource_Order_Line__c.FieldSets.ECS__Packing_Slip}" var="fs" rendered="{!typeVal='Packing Slip'}">
+		                                                    <th class="table517header"><span style="font-family:verdana,geneva,sans-serif;"><span style="font-size:11px;">{!fs.Label}</span></span>
+		                                                    </th>
+		                                                </apex:repeat>
+		                                            </tr>
+		                                        </thead>
+		                                        <tbody>
+		                                            <apex:repeat value="{!custOrder.orderLines}" var="ol">
+		                                                <tr valign="top">
+		                                                    <apex:repeat value="{!$ObjectType.ECS__eCommSource_Order_Line__c.FieldSets.ECS__Invoice}" var="fs" rendered="{!typeVal!='Packing Slip'}">
+		                                                        <td style="text-align: center;"><span style="font-size:11px;"><span style="font-family:verdana,geneva,sans-serif;"><apex:outputField value="{!ol[fs]}" /></span></span>
+		                                                        </td>
+		                                                    </apex:repeat>
+		                                                    <apex:repeat value="{!$ObjectType.ECS__eCommSource_Order_Line__c.FieldSets.ECS__Packing_Slip}" var="fs" rendered="{!typeVal='Packing Slip'}">
+		                                                        <td style="text-align: center;"><span style="font-size:11px;"><span style="font-family:verdana,geneva,sans-serif;"><apex:outputField value="{!ol[fs]}" /></span></span>
+		                                                        </td>
+		                                                    </apex:repeat>
+		                                                </tr>
+		                                            </apex:repeat>
+		                                        </tbody>
+		                                    </table>
+		                                </td>
+		                            </tr>
+		                        </tbody>
+		                    </table>
+		                </td>
+		            </tr>
+		            <tr>
+		                <td height="4">&nbsp;</td>
+		            </tr>
+		            <tr>
+		                <td>
+		                    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+		                        <tr>
+		                            <td>
+		                            	<!-- Fial block -->
+		                                <table align="right" border="1" cellpadding="5" cellspacing="0" style="font-family: arial, helvetica, sans-serif; width: 100%;">
+		                                    <tr>
+		                                        <td style="vertical-align: top; width: 60%;"><span style="font-size:11px;"><span style="font-family:verdana,geneva,sans-serif;">
+												    Notes:<br />
+													{!custOrder.o.ECS__Invoice_Notes__c}
+													<apex:outputText escape="false" value="{!custOrder.o.ECS__Transaction_Notes__c}" rendered="{!custOrder.oset.ECS__Display_Transaction_Notes_on_Invoice__c}"/>
+													</span></span>
+		                                        </td>
+		                                        <td>
+		                                            <apex:outputpanel rendered="{!typeVal!='Packing Slip'}">
+		                                                <table>
+		                                                    <tr>
+		                                                        <td style="text-align: left; vertical-align: middle;">
+		                                                            <span style="font-size:11px;"><span style="font-family:verdana,geneva,sans-serif;">Sub-Total:&nbsp;</span></span>
+		                                                        </td>
+		                                                        <td style="border-bottom-style: solid; border-bottom-width: 1px; text-align: right; width: 250px; vertical-align: middle; white-space: nowrap;">
+		                                                            <span style="font-size:11px;"><span style="font-family:verdana,geneva,sans-serif;"><apex:outputText value="{!currencySymbol}{0,number,#,##0.00}"><apex:param value="{!custOrder.o.ECS__Order_Line_Total__c}" /></apex:outputText></span></span>
+		                                                        </td>
+		                                                    </tr>
+		                                                </table>
+		                                                <!-- <apex:outputPanel rendered="{!custOrder.o.Total_Shipping_Handling__c!=null && custOrder.o.Total_Shipping_Handling__c>0}"> -->
+		                                                    <table>
+		                                                        <tr>
+		                                                            <td style="text-align: left; vertical-align: middle; white-space: nowrap;" nowrap="true">
+		                                                                <span style="font-size:11px; white-space: nowrap; "><span style="font-family:verdana,geneva,sans-serif; white-space: nowrap; ">Shipping &amp; Handling:&nbsp;</span></span>
+		                                                            </td>
+		                                                            <td style="border-bottom-style: solid; border-bottom-width: 1px; text-align: right; width: 250px; vertical-align: middle; white-space: nowrap; border-color: rgb(0, 0, 0);">
+		                                                                <span style="font-size:11px;"><span style="font-family:verdana,geneva,sans-serif;"><apex:outputText value="{!currencySymbol}{0,number,#,##0.00}"><apex:param value="{!custOrder.o.ECS__Total_Shipping_Handling__c}"/></apex:outputText></span></span>
+		                                                            </td>
+		                                                        </tr>
+		                                                    </table>
+		                                                <!--</apex:outputPanel> -->
+		                                                <apex:outputPanel rendered="{!custOrder.o.ECS__Discount_Amount__c!=null && custOrder.o.ECS__Discount_Amount__c<0}">
+		                                                    <table>
+		                                                        <tr>
+		                                                            <td style="text-align: left; vertical-align: middle;">
+		                                                                <span style="font-size:11px;"><span style="font-family:verdana,geneva,sans-serif;">Discounts:&nbsp;</span></span>
+		                                                            </td>
+		                                                            <td style="border-bottom-style: solid; border-bottom-width: 1px; text-align: right; width: 250px; vertical-align: middle; white-space: nowrap; border-color: rgb(0, 0, 0);">
+		                                                                <span style="font-size:11px;"><span style="font-family:verdana,geneva,sans-serif;"><apex:outputText value="({!currencySymbol}{0,number,#,##0.00})"><apex:param value="{!custOrder.o.ECS__Discount_Amount__c*-1}"/></apex:outputText></span></span>
+		                                                            </td>
+		                                                        </tr>
+		                                                    </table>
+		                                                </apex:outputPanel>
+		                                                <apex:outputPanel rendered="{!custOrder.o.ECS__Credit_Redeemed__c!=null && custOrder.o.ECS__Credit_Redeemed__c!=0}">
+		                                                    <table style="border: 1px solid green">
+		                                                        <tr>
+		                                                            <td style="text-align: left; vertical-align: middle; white-space: nowrap; " nowrap="true">
+		                                                                <span style="font-size:11px; white-space: nowrap; "><span style="font-family:verdana,geneva,sans-serif; white-space: nowrap; ">Credits Redeemed:&nbsp;</span></span>
+		                                                            </td>
+		                                                            <td style="border-bottom-style: solid; border-bottom-width: 1px; text-align: right; width: 250px; vertical-align: middle; white-space: nowrap; border-color: rgb(0, 0, 0);">
+		                                                                <span style="font-size:11px;"><span style="font-family:verdana,geneva,sans-serif;"><apex:outputText value="({!currencySymbol}{0,number,#,##0.00})"><apex:param value="{!custOrder.o.ECS__Credit_Redeemed__c*-1}"/></apex:outputText></span></span>
+		                                                            </td>
+		                                                        </tr>
+		                                                    </table>
+		                                                </apex:outputPanel>
+		                                                <apex:outputPanel rendered="{!custOrder.o.ECS__Supplier_Discount__c!=null && custOrder.o.ECS__Supplier_Discount__c<0}">
+		                                                    <table>
+		                                                        <tr>
+		                                                            <td style="text-align: left; vertical-align: middle; white-space: nowrap; " nowrap="true">
+		                                                                <span style="font-size:11px; white-space: nowrap; "><span style="font-family:verdana,geneva,sans-serif; white-space: nowrap; ">Supplier Discount:&nbsp;</span></span>
+		                                                            </td>
+		                                                            <td style="border-bottom-style: solid; border-bottom-width: 1px; text-align: right; width: 250px; vertical-align: middle; white-space: nowrap; border-color: rgb(0, 0, 0);">
+		                                                                <span style="font-size:11px;"><span style="font-family:verdana,geneva,sans-serif;"><apex:outputText value="({!currencySymbol}{0,number,#,##0.00})"><apex:param value="{!custOrder.o.ECS__Supplier_Discount__c*-1}"/></apex:outputText></span></span>
+		                                                            </td>
+		                                                        </tr>
+		                                                    </table>
+		                                                </apex:outputPanel>
+		                                                
+		                                                <!-- VAT & Total -->
+		                                                <table>
+		                                                    <tr>
+		                                                        <td style="text-align: left; vertical-align: middle;">
+		                                                            <span style="font-size:11px;"><span style="font-family:verdana,geneva,sans-serif;">{!taxLabel}:&nbsp;</span></span>
+		                                                        </td>
+		                                                        <td style="border-bottom-style: solid; border-bottom-width: 1px; text-align: right; width: 250px; vertical-align: middle; white-space: nowrap; border-color: rgb(0, 0, 0);">
+		                                                            <span style="font-size:11px;"><span style="font-family:verdana,geneva,sans-serif;">
+																   <apex:outputText value="{!currencySymbol}{0,number,#,##0.00}"><apex:param value="{!custOrder.o.ECS__Tax_Total__c}"/></apex:outputText>
+																</span></span>
+		                                                        </td>
+		                                                    </tr>
+		                                                    <tr>
+		                                                        <td style="text-align: left; vertical-align: middle;">
+		                                                            <span style="font-size:11px;"><span style="font-family:verdana,geneva,sans-serif;">Total:&nbsp;</span></span>
+		                                                        </td>
+		                                                        <td style="border-bottom-style: solid; border-bottom-width: 1px; text-align: right; width: 75px; vertical-align: middle; white-space: nowrap;">
+		                                                            <span style="font-size:11px;">
+		                                                            	<span style="font-family:verdana,geneva,sans-serif;">
+																  			<apex:outputText value="{!currencySymbol}{0,number,#,##0.00}">
+																     			<apex:param value="{!custOrder.o.ECS__Total_Order_Amount__c}"/> 
+																  			</apex:outputText>
+																		</span>
+																	</span>
+		                                                        </td>
+		                                                    </tr>
+		                                                    <apex:outputPanel rendered="{!!custOrder.oset.ECS__HidePaymentsonInvoice__c}">
+		                                                        <tr>
+		                                                            <td style="text-align: left; vertical-align: middle;">
+		                                                                <span style="font-size:11px;">
+																		<span style="font-family:verdana,geneva,sans-serif;">Payments:</span>
+		                                                                </span>
+		                                                            </td>
+		                                                            <td style="border-bottom-style: solid; border-bottom-width: 1px; text-align: right; width: 75px; border-color: rgb(0, 0, 0); vertical-align: middle; white-space: nowrap;">
+		                                                                <span style="font-size:11px;">
+																		<span style="font-family:verdana,geneva,sans-serif;">
+																			<apex:outputText value="{!currencySymbol}{0,number,#,##0.00}">
+																				<apex:param value="{!custOrder.o.ECS__Total_Payments__c}" />
+																			</apex:outputText>
+																		</span>
+		                                                                </span>
+		                                                            </td>
+		                                                        </tr>
+		                                                    </apex:outputPanel>
+		                                                    <!-- BALANCE -->
+		                                                    <!-- <apex:outputPanel rendered="{!!custOrder.oset.HideBalanceDueonInvoice__c}"> 
+			                                                    <tr>
+						                                       		<td style="text-align: left; vertical-align: middle; border: 1px solid">
+						                                           		<span style="font-size:11px; font-family:verdana,geneva,sans-serif;">Balance Due:</span>
+						                                           </td>
+						                                           <td style="border:1px solid; text-align: right; width: 75px; border-color: rgb(0, 0, 0); vertical-align: middle; white-space: nowrap;">
+						                                           	<table>
+						                                            	<tr>
+						                                            		<td>
+								                                            	<span style="font-size:11px;">
+																					<span style="font-family:verdana,geneva,sans-serif;">
+																						<apex:outputText value="{!currencySymbol}{0,number,#,##0.00}" rendered="{!!custOrder.oset.Tax_Inclusive__c}">
+																					    	<apex:param value="{!custOrder.o.Balance_Due__c}" />
+																					 	</apex:outputText>
+																					 </span>
+																					 <span style="font-family:verdana,geneva,sans-serif;text-align:right">
+																					 	<apex:outputText value="{!currencySymbol}{0,number,#,##0.00}" rendered="{!custOrder.oset.Tax_Inclusive__c}">
+																					    	<apex:param value="{!custOrder.o.Total_Order_Amount__c - custOrder.o.Total_Payments__c}" />
+																					  	</apex:outputText>
+																					</span>
+								                                             	</span>
+						                                             		</td>
+						                                             	</tr>
+						                                            	</table>	
+						                                         	</td>
+						                                       </tr>
+						                                     <!-- </apex:outputPanel> -->
+		                                                </table>
+		                                            </apex:outputpanel>
+		                                        </td>
+		                                    </tr>
+								            <tr>
+								                <td>
+								                	<span style="font-size:11px;">
+								                		<span style="font-family:verdana,geneva,sans-serif;">
+								                			<apex:outputText escape="false" value="{!custOrder.oset.ECS__Additional_Details__c}"/>
+								                		</span>
+								                	</span>
+								                </td>
+								                <td></td>
+								            </tr>
+		                                </table>
+		                            </td>
+		                        </tr>
+		                    </table> 
+		                </td>
+		            </tr>
+
+		            <apex:outputPanel rendered="{!custOrder.oset.ECS__Barcode_Location__c='Bottom - Middle'}"> 
+		                <tr>
+		                    <td>
+		                        <center>
+		                            <apex:outputPanel rendered="{!custOrder.barcodeValue=null}">
+		                                <c:BarcodeContainer barcodeText="{!custOrder.o.ECS__External_Order_ID__c}" displayText="{!custOrder.o.ECS__External_Order_ID__c}" width="4" height="50" />
+		                            </apex:outputPanel>
+		                            <apex:outputPanel rendered="{!custOrder.barcodeValue!=null}">
+		                                <c:BarcodeContainer barcodeText="{!custOrder.barcodeValue}" displayText="{!custOrder.barcodeValue}" width="4" height="50" />
+		                            </apex:outputPanel>
+		                        </center>
+		                    </td>
+		                </tr>
+		            </apex:outputPanel>
+
+		            <apex:outputPanel rendered="{!custOrder.o.ECS__PrintJob__c!=null}"> 
+		                <tr><td><center>{!custOrder.o.ECS__PrintJob__r.Name}</center></td></tr>
+		            </apex:outputPanel>
+		            		            
+		        </tbody>
+		    </table>
+	
+		    <div style="page-break-after:always;"></div>
+		    
+		    <!-- <apex:outputPanel rendered="{!custOrder.pageBreak}">
+		    	<div style="page-break-after:always;">&nbsp;</div>
+		    </apex:outputPanel> -->
+		    
+		</apex:repeat>
+		
+	</body>
+
+</apex:page>

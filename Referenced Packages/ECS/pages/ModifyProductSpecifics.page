@@ -1,0 +1,3 @@
+<apex:page standardController="ECS__Product__c" showHeader="false">
+	<c:CreateProduct />
+</apex:page>

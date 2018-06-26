@@ -1,0 +1,40 @@
+<apex:page controller="ECS.BatchPrintController">
+
+	<apex:pageMessages />
+	
+	<apex:form id="form">
+      <apex:pageBlock id="pageBlock">
+		<apex:pageBlockButtons location="bottom"> 
+		    <apex:commandButton action="{!showCounts}" value="Show Counts"/>
+		    <apex:commandButton action="{!print}" value="Print"/>
+		</apex:pageBlockButtons>
+        <apex:pageBlockSection id="pgsLines" columns="1">
+			<apex:pageBlockSectionItem id="printFromSection">
+				Print Invoices After: <apex:inputField value="{!printInfo.ECS__Last_Updated__c}"/>
+	        </apex:pageBlockSectionItem>
+			<!-- <apex:pageBlockSectionItem id="itemIdSection">
+				# of Pickers: <apex:inputText value="{!numPickers}"/>
+	        </apex:pageBlockSectionItem>
+			<apex:pageBlockSectionItem id="NumInvoicesSection">
+				# Invoices To Print: <apex:inputText value="{!numInvoicesToPrint}"/>
+	        </apex:pageBlockSectionItem> -->
+			<apex:pageBlockSectionItem id="domExp">
+				Domestic Expedited: <apex:outputText value="{!domesticExpedited}"/>
+	        </apex:pageBlockSectionItem>
+			<apex:pageBlockSectionItem id="x750">
+				> $750: <apex:outputText value="{!x750}"/>
+	        </apex:pageBlockSectionItem>
+			<apex:pageBlockSectionItem id="singgleC">
+				Single Clothing: <apex:outputText value="{!singleClothing}"/>
+	        </apex:pageBlockSectionItem>
+			<apex:pageBlockSectionItem id="singleNC">
+				Single Non-Clothing: <apex:outputText value="{!singleNC}"/>
+	        </apex:pageBlockSectionItem>
+			<apex:pageBlockSectionItem id="multi">
+				Multi-Quantity: <apex:outputText value="{!multi}"/>
+	        </apex:pageBlockSectionItem>	 
+		 </apex:pageBlockSection>		 
+	 </apex:pageBlock>
+   </apex:form>
+
+</apex:page>

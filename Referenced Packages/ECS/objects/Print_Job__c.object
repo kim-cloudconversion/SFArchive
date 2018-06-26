@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <deprecated>false</deprecated>
+    <enableActivities>false</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>false</enableHistory>
+    <enableReports>false</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <fields>
+        <fullName>DatePrinted__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Date Printed</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>Order__c</fullName>
+        <deleteConstraint>Restrict</deleteConstraint>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Order</label>
+        <referenceTo>eCommSource_Order__c</referenceTo>
+        <relationshipLabel>Print Jobs</relationshipLabel>
+        <relationshipName>Print_Jobs_Orders</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>PrintJobId__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Print Job Id</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>SortOrder__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Sort Order</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Status__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Status</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Pending</fullName>
+                    <default>false</default>
+                </value>
+                <value>
+                    <fullName>Printed</fullName>
+                    <default>false</default>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <label>Print Job</label>
+    <listViews>
+        <fullName>All</fullName>
+        <columns>NAME</columns>
+        <columns>OWNER.ALIAS</columns>
+        <columns>CREATEDBY_USER</columns>
+        <columns>CREATED_DATE</columns>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+    </listViews>
+    <nameField>
+        <label>Print Job Name</label>
+        <type>Text</type>
+    </nameField>
+    <pluralLabel>Print Jobs</pluralLabel>
+    <searchLayouts>
+        <listViewButtons>Delete</listViewButtons>
+        <listViewButtons>Print_Jobs</listViewButtons>
+        <listViewButtons>View_Invoices2</listViewButtons>
+        <searchResultsAdditionalFields>CREATEDBY_USER</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>CREATED_DATE</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>PrintJobId__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>DatePrinted__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Status__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>UPDATEDBY_USER</searchResultsAdditionalFields>
+        <searchResultsCustomButtons>Delete</searchResultsCustomButtons>
+        <searchResultsCustomButtons>Print_Jobs</searchResultsCustomButtons>
+    </searchLayouts>
+    <sharingModel>ReadWrite</sharingModel>
+    <webLinks>
+        <fullName>Delete</fullName>
+        <availability>online</availability>
+        <displayType>massActionButton</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>Delete</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <requireRowSelection>true</requireRowSelection>
+        <url>{!REQUIRESCRIPT(&quot;/soap/ajax/27.0/connection.js&quot;)} 
+{!REQUIRESCRIPT(&quot;/soap/ajax/27.0/apex.js&quot;)} 
+
+var IdsToDelete, successes, errors, successS, errorS, results, msg, subIdsToDelete, subIndex 
+IdsToDelete = {!GetRecordIDs($ObjectType.Print_Job__c)} 
+if(IdsToDelete.length == 0) 
+alert(&apos;Error:\n\nYou must choose at least one Print Job to delete.&apos;) 
+delRecords = false 
+if(IdsToDelete.length &gt; 0) 
+delRecords = confirm(&apos;Warning:\n\nYou are about to delete &apos;+IdsToDelete.length+&apos; record&apos;+ 
+(IdsToDelete.length==1?&apos;&apos;:&apos;s&apos;)+&apos;.\n\nAre you certain you wish to continue?&apos;) 
+results = null 
+successes = errors = subIndex = 0 
+if(delRecords) 
+{ while(subIndex &lt;= IdsToDelete.length) 
+{ subIdsToDelete = IdsToDelete.slice(subIndex, Math.min(subIndex+200,IdsToDelete.length)) 
+results = sforce.connection.deleteIds(subIdsToDelete) 
+while(results.length) 
+if(results.pop().getBoolean(&apos;success&apos;)) 
+successes++ 
+else 
+errors++ 
+subIndex += 200 
+} 
+msg = &apos;&apos; 
+successS = successes==1?&apos; was&apos;:&apos;s were&apos; 
+errorS = errors==1?&apos; was&apos;:&apos;s were&apos; 
+if(successes &gt; 0) 
+msg += successes+&apos; record&apos;+successS+&apos; deleted&apos; 
+if(errors &gt; 0) 
+{ if(msg != &apos;&apos;) 
+msg += &apos;, and &apos; 
+msg += errors+&apos; record&apos;+errorS+&apos; NOT deleted&apos; 
+} 
+msg += &apos;.&apos; 
+alert(msg) 
+window.location.reload(); 
+}</url>
+    </webLinks>
+    <webLinks>
+        <fullName>Print</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <height>600</height>
+        <linkType>page</linkType>
+        <masterLabel>Print</masterLabel>
+        <openType>sidebar</openType>
+        <page>ManagePrintJobs</page>
+        <protected>false</protected>
+    </webLinks>
+    <webLinks>
+        <fullName>Print_Jobs</fullName>
+        <availability>online</availability>
+        <displayType>massActionButton</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>Print Jobs</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <requireRowSelection>true</requireRowSelection>
+        <url>var ids= {!GETRECORDIDS($ObjectType.Print_Job__c)}; if(ids.length &lt; 1 ) alert(&apos;Please select at least one Print Job.&apos;); else var mywin = window.open(&apos;/apex/ECS__ManagePrintJobs?ids=&apos;+ids.join(&apos;,&apos;));</url>
+    </webLinks>
+    <webLinks>
+        <fullName>View_Invoices</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <hasMenubar>true</hasMenubar>
+        <hasScrollbars>true</hasScrollbars>
+        <hasToolbar>true</hasToolbar>
+        <height>600</height>
+        <isResizable>true</isResizable>
+        <linkType>url</linkType>
+        <masterLabel>View Invoices</masterLabel>
+        <openType>newWindow</openType>
+        <position>none</position>
+        <protected>false</protected>
+        <showsLocation>true</showsLocation>
+        <showsStatus>true</showsStatus>
+        <url>/apex/ECS__Invoices?printJobId={!Print_Job__c.Id}</url>
+        <width>800</width>
+    </webLinks>
+    <webLinks>
+        <fullName>View_Invoices2</fullName>
+        <availability>online</availability>
+        <displayType>massActionButton</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>View Invoices</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <requireRowSelection>true</requireRowSelection>
+        <url>var ids= {!GETRECORDIDS($ObjectType.Print_Job__c)}; if(ids.length &lt; 1 ) alert(&apos;Please select at least one Print Job.&apos;); else var mywin = window.open(&apos;/apex/ECS__Invoices?printJobIds=&apos;+ids.join(&apos;,&apos;));</url>
+    </webLinks>
+</CustomObject>

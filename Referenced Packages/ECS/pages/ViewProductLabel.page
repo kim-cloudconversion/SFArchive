@@ -1,0 +1,2 @@
+<apex:page standardController="ECS__Product__c" extensions="ECS.PrintProductLabelController" action="{!view}">
+</apex:page>

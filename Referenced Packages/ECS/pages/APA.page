@@ -1,0 +1,209 @@
+<apex:page doctype="html-5.0" standardStylesheets="false" showHeader="false" sidebar="true" controller="ECS.APAController">
+
+	<!-- <apex:includeScript value="//code.jquery.com/jquery-1.9.1.min.js" />-->
+	<apex:includeScript value="https://code.jquery.com/jquery-2.2.1.min.js"/>
+    <apex:stylesheet value="https://www.sellerstoolbox.com/assets/styles/css/app.css"/>
+    <apex:stylesheet value="{!URLFOR($Resource.ECS__SLDS, 'assets/styles/salesforce-lightning-design-system.min.css')}" />
+    <apex:stylesheet value="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css" />
+    <apex:includeScript value="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js" />
+    <apex:includeScript value="//dl.dropboxusercontent.com/s/bfujlmgq0hcqydl/product-category.js" />
+    <apex:stylesheet value="//dl.dropboxusercontent.com/s/lirw44gyffz7krw/product-category.css" />
+
+    <Script>
+      function myfunction()
+      {
+       callfunction();
+      }
+      
+      function myfunction2()
+      {
+       callfunction2();
+      }
+    
+      $(document).ready(function(){  
+      
+         $(".list tr").click(function(){
+             $(this).find("a").click();           
+         });
+         
+         $('#Listing-Container').DataTable();   
+              
+      }); 
+   </Script>
+   
+   <style>
+         .outer {
+            width: 90%;
+            height:175px;
+            color: navy;
+            background-color: #403C3C;
+            border: 1px solid darkblue;
+            margin-left: 1cm;
+         }
+         .yellowRow{
+             background-color:#FF6;
+         }
+         .brownRow{
+             background-color:#EA6;
+         }
+         .greenRow{
+             background-color:#5D6;
+         }
+    </style> 
+     
+    <apex:pageMessages />
+    <div class="slds">
+	    <apex:form id="details">
+	
+	        <apex:actionFunction name="callfunction" action="{!search}" />
+	        <apex:actionFunction name="callfunction2" action="{!search}" reRender="panel" /> 
+	
+	        <apex:outputPanel id="all">
+	        <apex:pageBlock id="pageBlock">
+	        <apex:outputPanel id="searchPanel">
+	        <br/>
+	        <apex:outputPanel style="margin-left: 1cm;" id="panel"> Search Text<br/><br/>
+	            <apex:inputText value="{!identifier}" onkeydown="if(event.keyCode==13){myfunction();this.blur();}" onchange="myfunction2();" style="width:60%;margin-left: 1cm;" />
+	            <apex:outputPanel rendered="{!ProductDetailList.size>0}">
+	            	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<apex:commandLink action="{!create}" value="Create Product"/>
+	            </apex:outputPanel>
+	            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<apex:commandLink action="{!selectCategory}" value="Select Product Category"/>
+	        </apex:outputPanel>
+	        &nbsp;&nbsp;&nbsp;
+	        <apex:outputPanel >
+	        <div class="outer" style="font-weight: bold">
+	           <br/>
+	           <div style="margin-left: 10px;">
+	               <Font color="Yellow">ASIN - </Font><Font color="White">10 Character alphanumeric unique identifier assigned by Amazon.com </Font><br/><br/>
+	               <Font color="Yellow">EAN - </Font><Font color="White">13 Digits (12 data and 1 check) barcoding standard</Font><br/><br/>
+	               <Font color="Yellow">UPC - </Font><Font color="White">12 numerical digits,Which are Uniquely assigned to each trade items </Font><br/><br/>
+	               <Font color="Yellow">SP - </Font><Font color="White">Unique Purchase Order Line Identifier from Manifest</Font><br/><br/>
+	               <!-- 
+	               <Font color="Yellow">ISBN - </Font><Font color="White">13 Character Unique identifier for Books </Font><br/><br/>
+	               <Font color="Yellow">GTIN - </Font><Font color="White">14 digits identifiers for trade items </Font><br/><br/>
+	               <Font color="Yellow">URL - </Font><Font color="White">Paste a URL containing an ASIN </Font><br/><br/>
+	               <Font color="Yellow">SKU - </Font><Font color="White">Your product listing SKU</Font><br/><br/>
+	               <Font color="Yellow">FNSKU - </Font><Font color="White">Amazon fulfillment network SKU </Font><br/><br/>
+	               <Font color="Yellow">Plain Text - </Font><Font color="White">Basic Amazon Search if unable to match search type above </Font><br/> -->
+	           </div>
+	        </div>
+	        </apex:outputPanel>
+	        <apex:outputPanel rendered="{!ProductDetailList.size>0}">
+	             
+	             <div style="width:90%; margin-left: 1cm;">
+	             
+	             	<div class="slds-text-heading--small mainheading">{!categoryStr}</div>
+	             	
+	             	
+	             	<div class="slds-text-heading--small mainheading">Quantity <apex:inputText value="{!quantity}"/></div>
+	             	
+	             	<!--<apex:inputField value="{!masterProd.Category__c}"/>
+	             	
+		  			<fieldset class="slds-form--compound">
+					<div class="form-element__group">
+				     	<div class="slds-form-element__row">   
+				        	<div class="slds-form-element slds-size--1-of-2">	
+								<apex:outputPanel id="table">
+									<div class="row">
+										<c:AutoCompleteV2 allowClear="true" 
+											importJquery="true" 
+											labelField="ECS__FullCategoryName__c" 
+											SObject="ECS__Category__c" 
+											valueField="Id" 
+											targetField="{!categoryId}" 
+											syncManualEntry="false" 
+											whereClause="ECS__Is_Active__c=true AND ECS__Include_In_Search__c=true"/> 
+									</div>
+								</apex:outputPanel> 
+							</div>
+						</div>
+					</div>
+				</fieldset> -->
+	             
+	             <Table id="Listing-Container" class="responsive" border="1" cellspacing="0" cellpadding="4" style="border:1px solid white;">
+	             	<thead>
+	             		<tr>
+		                 <th style="text-align: center;">Image</th>
+		                 <th>Title</th>
+		                 <th style="text-align: center;">ASIN</th>
+		                 <th style="text-align: center;">Sales Rank</th> 
+		                 <th style="text-align: center;">UPC</th>
+		                 <th style="text-align: center;">Size</th>
+		                 <th style="text-align: center;">Color</th>
+		                 <th style="text-align: center;">Merchant</th>
+                         <th style="text-align: center;">Condition</th>
+		                 <th style="text-align: center;">Features</th>
+		                </tr>
+	                </thead>
+	                <tbody>
+	                 <apex:repeat value="{!ProductDetailList}" var="pdl">
+	                     <tr>
+	                         <td style="text-align: center;width:75px;height:75px;">
+	                         	<apex:outputLink value="{!pdl.DetailPageURL}" target="_blank"><apex:image url="{!pdl.MediumImage.URL}" /></apex:outputLink>
+	                         </td>
+	                         <td><apex:outputText value="{!pdl.ItemAttributes.Title}"></apex:outputText></td>
+	                         <td style="text-align: center;"><apex:outputText value="{!pdl.ASIN}"></apex:outputText></td>
+	                         <td style="text-align: center;"><apex:outputText value="{!pdl.SalesRank}"></apex:outputText></td>
+	                         <td style="text-align: center;"><apex:outputText value="{!pdl.ItemAttributes.UPC}"></apex:outputText></td>
+	                         <td style="text-align: center;"><apex:outputText value="{!pdl.ItemAttributes.Size}"></apex:outputText></td>
+	                         <td style="text-align: center;"><apex:outputText value="{!pdl.ItemAttributes.Color}"></apex:outputText></td>
+                         	 <td style="text-align: center;">
+	                         	 <apex:repeat value="{!pdl.offers}" var="o">
+	                         		<apex:outputText value="{!o.MerchantName} - {!o.OfferPrice.FormattedPrice}"></apex:outputText><br/>
+	                         	 </apex:repeat>
+                         	 </td>
+                         	 <td style="text-align: center;">
+	                         	 <apex:repeat value="{!pdl.offers}" var="o">
+	                         		<apex:outputText value="{!o.Condition}"></apex:outputText><br/>
+	                         	 </apex:repeat>
+                         	 </td>
+	                         <td style="text-align: center;">
+	                         	<apex:repeat value="{!pdl.ItemAttributes.features}" var="f">
+	                         		<apex:outputText value="{!f}"/><br/>
+	                         	</apex:repeat>
+	                         </td>
+	                         <!--  <td style="text-align: center;"><apex:outputText value="{!pdl.ItemAttributes.Condition}"></apex:outputText></td>  -->                      
+	                    </tr>
+		                <!-- <apex:repeat value="{!pdl.variations.items}" var="v">
+		                     <tr>
+		                         <td style="text-align: center;width:75px;height:75px;">
+		                         	<apex:outputLink value="{!pdl.DetailPageURL}" target="_blank"><apex:image url="{!v.MediumImage.URL}" /></apex:outputLink>
+		                         </td>
+		                         <td><apex:outputText value="{!v.ItemAttributes.Title}"></apex:outputText></td>
+		                         <td style="text-align: center;"><apex:outputText value="{!v.ASIN}"></apex:outputText></td>
+		                         <td style="text-align: center;"><apex:outputText value="{!v.SalesRank}"></apex:outputText></td>
+		                         <td style="text-align: center;"><apex:outputText value="{!v.ItemAttributes.UPC}"></apex:outputText></td>
+		                         <td style="text-align: center;"><apex:outputText value="{!v.ItemAttributes.Size}"></apex:outputText></td>
+		                         <td style="text-align: center;"> <apex:outputText value="{!v.ItemAttributes.Color}"></apex:outputText></td>
+		                         <td style="text-align: center;">
+		                         	<apex:repeat value="{!v.offers}" var="o">
+		                         		<apex:outputText value="{!o.MerchantName} - {!o.OfferPrice.FormattedPrice}"></apex:outputText><br/>
+		                         	</apex:repeat>
+		                         </td>
+		                         <td style="text-align: center;">
+		                         	<apex:repeat value="{!v.offers}" var="o">
+		                         		<apex:outputText value="{!o.Condition}"></apex:outputText><br/>
+		                         	</apex:repeat>
+		                         </td>
+		                         <td style="text-align: center;">
+		                         	<apex:repeat value="{!v.ItemAttributes.features}" var="f">
+		                         		<apex:outputText value="{!f}"/><br/>
+		                         	</apex:repeat>
+		                         </td>
+		                    </tr>
+		                </apex:repeat> -->
+	                 </apex:repeat>
+	                </tbody>
+	             </table>
+	             
+	            </div>
+	        </apex:outputPanel>
+	        <apex:outputPanel rendered="{!ErrorMsg != ''}" ><br/><Apex:outputText value="{!ErrorMsg}" style="margin-left: 1cm;"></Apex:outputText> </apex:outputPanel>
+	        </apex:outputPanel>
+	        </apex:pageBlock>
+	        </apex:outputPanel>
+	        
+		</apex:form>
+	</div>
+
+</apex:page>

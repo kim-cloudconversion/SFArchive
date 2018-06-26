@@ -1,0 +1,50 @@
+<apex:page showHeader="false" standardController="ECS__Product__c" sidebar="false"
+			extensions="ECS.CreateLabelController" standardStylesheets="false" 
+			applyBodyTag="false" applyHtmlTag="false" renderAs="PDF"><!-- renderAs="PDF" -->
+
+<html> 
+	<head>
+    	
+    	<style type="text/css">
+
+			@page {
+				size: {!pageWidth}in {!pageHeight}in;
+				margin-top: 0;
+			    margin-left: 0;
+			    margin-right: 0;
+			    margin-bottom: 0;
+			}
+			
+			body {
+				font-family: Arial, Sans-serif;
+				margin: 0;
+    			padding: 0;
+			}
+			
+			.barcodeText {
+				font-size: 14px;
+			}
+			
+			span.titleBig {
+				font-size:15px !important;
+			}
+			
+		</style>
+		
+	</head>
+ 	<body>
+ 
+ 		<apex:outputPanel rendered="{!labelSizeSmall}">
+  			<c:CreateLabelSmall />
+  		</apex:outputPanel>
+  		<apex:outputPanel rendered="{!labelSizeMedium}">
+  			<c:CreateLabelMedium />
+  		</apex:outputPanel>
+  		<apex:outputPanel rendered="{!labelSizeLarge}">
+  			<c:CreateLabelLarge />	
+  		</apex:outputPanel>
+
+  	</body>
+</html>
+
+</apex:page>

@@ -1,0 +1,5 @@
+<apex:page standardController="CloudConversion__Inquiry_Setting__c">
+	
+	<c:GetListing />
+	
+</apex:page>

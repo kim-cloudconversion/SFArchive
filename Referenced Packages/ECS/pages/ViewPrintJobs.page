@@ -1,0 +1,3 @@
+<apex:page controller="ECS.ViewPrintJobsController" action="{!saveFile}">
+	<apex:pageMessages />
+</apex:page>

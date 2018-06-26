@@ -1,0 +1,3 @@
+<apex:page controller="ECS.WebToDealController" action="{!create}">
+	<apex:pageMessages />
+</apex:page>

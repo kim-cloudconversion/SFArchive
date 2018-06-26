@@ -1,0 +1,13 @@
+<apex:page controller="ECS.ManageProductImagesController"> 
+
+	<apex:pageMessages />
+	
+	<apex:form >
+	
+		Skip First Photo: <apex:inputCheckbox value="{!skipFirstPhoto}"/><br/> 
+	
+		Barcode ID: <apex:inputText value="{!itemId}"/><br/> 
+		<apex:commandButton id="saveBtn" action="{!save}" value="Save"/>
+	</apex:form>
+
+</apex:page>

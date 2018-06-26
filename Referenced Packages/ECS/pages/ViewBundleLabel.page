@@ -1,0 +1,2 @@
+<apex:page standardController="ECS__Bundle__c" extensions="ECS.ProductBundleController" action="{!view}"> 
+</apex:page>

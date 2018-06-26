@@ -1,0 +1,22 @@
+<apex:page standardController="CloudConversion__Listing__c" extensions="CloudConversion.ReviseItemController" action="{!reviseItems}">
+	<apex:pageMessages />
+	
+	<apex:outputpanel rendered="{!ir.errors.size>0}">
+		<h2><font color="red">Errors</font></h2>
+		<table>
+		<apex:repeat var="err" value="{!ir.errors}">
+			<tr><td>{!err.message}</td></tr>
+		</apex:repeat> 
+		</table>
+	</apex:outputpanel>
+
+	<apex:outputpanel rendered="{!ir.warnings.size>0}">
+		<h2><font color="orange">Warnings</font></h2>
+		<table>
+		<apex:repeat var="warn" value="{!ir.warnings}">
+			<tr><td>{!warn.message}</td></tr>
+		</apex:repeat> 
+		</table>
+	</apex:outputpanel>
+		
+</apex:page>

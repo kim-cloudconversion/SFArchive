@@ -1,0 +1,3 @@
+<apex:page standardController="ECS__Shipping_Detail__c" extensions="CloudConversion.ManageEBayShippingController" action="{!upload}">
+	<apex:pageMessages />
+</apex:page>

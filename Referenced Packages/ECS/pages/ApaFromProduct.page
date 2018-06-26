@@ -1,0 +1,5 @@
+<apex:page doctype="html-5.0" standardStylesheets="false" showHeader="false" sidebar="true" standardController="ECS__Product__c" extensions="ECS.APAController" action="{!search}">
+	
+	<c:APA id="c" topController="{!theController}"/> 
+
+</apex:page>

@@ -1,0 +1,21 @@
+<apex:page controller="ECS.PrintInvoicesController">
+
+	<apex:pageMessages />
+		
+	<apex:form id="form">
+      <apex:pageBlock id="pageBlock">
+		<apex:pageBlockButtons location="bottom"> 
+		    <!-- <apex:commandButton action="{!print}" value="Print"/> -->
+		    <apex:commandButton action="{!view}" value="View Invoices"/>
+		</apex:pageBlockButtons>
+        <apex:pageBlockSection id="pgsLines" columns="1">
+			<apex:pageBlockSectionItem id="itemIdSection">
+				# of Pickers: <apex:inputText value="{!numPickers}"/>
+				<!-- TODO: Printers <apex:selectList style="width: 565px;" value="{!ei.reason}" size="1">
+					<apex:selectOptions value="{!reasons}"/>
+				</apex:selectList> -->
+	        </apex:pageBlockSectionItem>
+		 </apex:pageBlockSection>
+	 </apex:pageBlock>
+   </apex:form>
+</apex:page>

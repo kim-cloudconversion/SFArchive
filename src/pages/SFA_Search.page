@@ -1,0 +1,79 @@
+<apex:page controller="SFA_Search">
+<script language="javascript">
+    var SelIDs = "j_id0:theForm:thePB:SelIDs";
+    var SelCmd = "j_id0:theForm:thePB:SelCmd";
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    function count_checks() {
+        var i=0, j=parseInt(document.getElementById('line_count').value);
+        var count = 0;
+        while (i < j) {
+            if (document.getElementById('chk_' + i++).checked == true) count++;
+        }
+        //alert(count + ' Checkboxes Checked.');
+    }
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    function unarchive_multi() {
+        if (confirm("Are you SURE you want to UN-ARCHIVE the selected archived records?")) {
+            var i=0, j=parseInt(document.getElementById('line_count').value);
+            var Str = "";
+            while (i < j) {
+                if (document.getElementById('chk_' + i).checked == true) {
+                    if (Str != "") Str += ",";
+                    Str += document.getElementById('chk_' + i).value;
+                }
+                i++;
+            }
+            document.getElementById(SelIDs).value = Str;
+            document.getElementById(SelCmd).value = "Unarchive";
+            doSelected(); // call apex function
+        }
+    }
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    function delete_multi() {
+        if (confirm("Are you SURE you want to PERMANENTLY DELETE the selected archived records?\n(This process IS NOT reversable)")) {
+            var i=0, j=parseInt(document.getElementById('line_count').value);
+            var Str = "";
+            while (i < j) {
+                if (document.getElementById('chk_' + i).checked == true) {
+                    if (Str != "") Str += ",";
+                    Str += document.getElementById('chk_' + i).value;
+                }
+                i++;
+            }
+            document.getElementById(SelIDs).value = Str;
+            document.getElementById(SelCmd).value = "Delete";
+            doSelected(); // call apex function
+        }
+    }
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    
+</script>
+<apex:pageMessages escape="false" />
+  <apex:form id="theForm">
+   <apex:actionFunction name="doSelected" action="{!DoSelected}"/>
+   <apex:sectionHeader title="Search Archived Tables"/>
+    <apex:pageblock id="thePB">
+        <table cellpadding="3" cellspacing="0" border="0">
+            <tr><td align="right">Choose Table:</td><td><apex:selectList value="{!TableName}" multiselect="false"  size="1" >
+                        <apex:actionSupport event="onchange" action="{!GetFields}" reRender="thePB"/>
+                        <apex:selectOptions value="{!TableOpts}"/>
+                        </apex:selectList>(Tables with Archived Records)</td></tr>
+            <tr><td align="right">Fields to Show:</td><td><apex:inputText value="{!FieldsToShow}" style="width: 450px"/></td></tr>
+            <tr><td align="right">Choose Fields:</td><td><apex:selectList value="{!FieldToAdd}" multiselect="false"  size="1" >
+                        <apex:actionSupport event="onchange" action="{!AddField}" reRender="thePB"/>
+                        <apex:selectOptions value="{!FieldOpts}"/>
+                        </apex:selectList><apex:commandButton value="Save as Default" action="{!SaveFields}"/></td></tr>
+
+            <tr><td align="right">Search String:</td><td><apex:inputText value="{!SearchString}" style="width: 450px"/></td></tr>
+            <tr><td align="right">Limit:</td><td><apex:inputText value="{!QueryLimit}" style="width: 50px"/>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Offset:&nbsp;<apex:inputText value="{!QueryOffset}" style="width: 50px"/>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Debug:&nbsp;<apex:inputCheckbox value="{!DoDebug}" />
+                </td></tr>
+            <tr><td colspan="2" align="center"><apex:commandButton value="Search Archived Records" action="{!Search}"/></td></tr>
+        </table>
+      <apex:outputLabel escape="false" value="{!Content}" /> 
+      <a href="/apex/SFA_Tables">Archived Tables</a>
+      <apex:inputHidden id="SelIDs" value="{!SelIDs}"/><apex:inputHidden id="SelCmd" value="{!SelCmd}"/>
+  </apex:pageblock> 
+  </apex:form> 
+</apex:page>

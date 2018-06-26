@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customValue>
+        <fullName>Due Upon Receipt</fullName>
+        <default>false</default>
+    </customValue>
+    <customValue>
+        <fullName>Net 7</fullName>
+        <default>false</default>
+    </customValue>
+    <customValue>
+        <fullName>Net 15</fullName>
+        <default>false</default>
+    </customValue>
+    <customValue>
+        <fullName>Net 30</fullName>
+        <default>false</default>
+    </customValue>
+    <customValue>
+        <fullName>Net 60</fullName>
+        <default>false</default>
+    </customValue>
+    <masterLabel>Terms</masterLabel>
+    <sorted>false</sorted>
+</GlobalValueSet>

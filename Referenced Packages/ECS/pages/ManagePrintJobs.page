@@ -1,0 +1,3 @@
+<apex:page standardController="ECS__Print_Job__c" extensions="ECS.ManagePrintJobsController" action="{!print}">
+	<apex:pageMessages />
+</apex:page>
